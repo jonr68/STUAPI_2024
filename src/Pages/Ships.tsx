@@ -1,21 +1,19 @@
 import { useEffect, useState } from "react";
 import Spacecrafts from "../Spacecrafts";
 
-// interface SpacecraftsrDisplayProps {
-//   spacecrafts?: Spacecrafts;
-// }
-
 const Ships = () => {
-  const [data, setData] = useState();
-  // useEffect(() => {
-  //   loadData();
-  // });
+  const [data, setData] = useState<Spacecrafts[]>();
+
   const loadData = async () => {
     try {
-      const res = await fetch(
-        "https://stapi.co/api/v2/rest/spacecraft/search?name=enterprise",
-        { method: "POST" }
-      );
+      const randID = Math.round(Math.random() * 1000000) + 1;
+      const url = "https://stapi.co/api/v2/rest/spacecraftClass/search"; //"https://stapi.co/api/v2/rest/spacecraft/search?name=enterprise",
+      console.log(randID);
+      console.log(url);
+      const res = await fetch(url, {
+        method: "GET",
+        body: JSON.stringify({ uid: randID.toString }),
+      });
       const info = await res.json();
 
       if (!res.ok) {
@@ -35,10 +33,14 @@ const Ships = () => {
     <>
       <button onClick={loadData}>Load Data</button>
       <div>
-        {data.map((data, index) => {
+        {data?.map((data, index) => {
           return (
             <div key={index}>
-              <h1> {data.uid}</h1>
+              <ul>
+                <li>
+                  {data.registry} | {data.uid} | {data.name}{" "}
+                </li>
+              </ul>
             </div>
           );
         })}
