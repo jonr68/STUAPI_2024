@@ -2,27 +2,24 @@ import { useEffect, useState } from "react";
 import Spacecrafts from "../Spacecrafts";
 
 const Ships = () => {
-  const [data, setData] = useState<Spacecrafts[]>();
+  const [data, setData] = useState<Spacecrafts>();
 
   const loadData = async () => {
     try {
       const randID = Math.round(Math.random() * 1000000) + 1;
-      const url = "https://stapi.co/api/v2/rest/spacecraftClass/search"; //"https://stapi.co/api/v2/rest/spacecraft/search?name=enterprise",
+      const url = "https://stapi.co/api/v2/rest/spacecraft?uid=SRMA0000"+randID;
       console.log(randID);
       console.log(url);
-      const res = await fetch(url, {
-        method: "GET",
-        body: JSON.stringify({ uid: randID.toString }),
-      });
+      const res = await fetch(url)
       const info = await res.json();
 
       if (!res.ok) {
         console.log("Problem");
         return;
       }
-      // console.log(info.spacecrafts);
+      console.log(info.spacecraft);
 
-      setData(info.spacecrafts);
+      setData(info.spacecraft);
     } catch (error) {
       console.log(error);
     }
@@ -33,18 +30,27 @@ const Ships = () => {
     <>
       <button onClick={loadData}>Load Data</button>
       <div>
+        <h1>
+        {data?.name}
+        </h1>
+        <h2>
+        {data?.registry}
+        </h2>
+      </div>
+
+      {/* <div>
         {data?.map((data, index) => {
           return (
             <div key={index}>
               <ul>
                 <li>
-                  {data.registry} | {data.uid} | {data.name}{" "}
+                  {data.name} | {data.registry} {" "}
                 </li>
               </ul>
             </div>
           );
         })}
-      </div>
+      </div> */}
     </>
   );
 };
