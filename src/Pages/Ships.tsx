@@ -5,17 +5,17 @@ const Ships = () => {
   const [data, setData] = useState<Spacecrafts>();
 
   const loadData = async () => {
-
+    let info = []
     while (!data) {
       console.log("data: " + data);
       
     try {
       const randID = Math.round(Math.random() * 1000000) + 1;
-      const url = "https://stapi.co/api/v2/rest/spacecraft?uid=SRMA0000"+randID;
+      const url = "https://stapi.co/api/v2/rest/spacecraft?uid=enterprise"                //"https://stapi.co/api/v2/rest/spacecraft?uid=SRMA0000"+randID;
       console.log(randID);
       console.log(url);
       const res = await fetch(url)
-      const info = await res.json();
+      info = await res.json();
 
       if (!res.ok) {
         console.log("Problem");
